@@ -51,7 +51,11 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y \
             ninja-build \
-            pkg-config
+            pkg-config \
+            pipx
+
+      - name: Install meson
+        run: pipx install meson
 
       - name: Configure meson
         run: |
