@@ -443,9 +443,6 @@ if lua_opt.allowed()
     if lua_dep.found()
         conf.set('HAVE_LUA', 1)
         have_lua = true
-        if not cpp.has_header_symbol('lua.hpp', 'LUA_OK', dependencies: lua_dep)
-            add_project_arguments('-DLUA_OK=0', language: 'cpp')
-        endif
         conf.set_quoted(
             'LUA_DATADIR',
             get_option('prefix') / get_option('datadir') / 'rtorrent' / 'lua',
