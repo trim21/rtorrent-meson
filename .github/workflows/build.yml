@@ -1,0 +1,70 @@
+name: build
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  system-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            ninja-build \
+            pkg-config \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            zlib1g-dev \
+            libncurses-dev \
+            liblua5.4-dev
+
+      - name: Install meson
+        run: pipx install meson
+
+      - name: Configure meson
+        run: |
+          meson setup build \
+            -Dlua=enabled \
+            --wrap-mode=nofallback
+
+      - name: Build
+        run: meson compile -C build
+
+  wrap-fallback:
+    # miss libidn2
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install meson
+        run: pipx install meson
+      - name: Install build tools only
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            ninja-build \
+            pkg-config \
+            pipx
+
+      - name: Install meson
+        run: pipx install meson
+
+      - name: Configure meson
+        run: |
+          meson setup build \
+            -Dncurses=disabled \
+            -Dlua=enabled \
+            --wrap-mode=forcefallback
+
+      - name: Build
+        run: meson compile -C build
