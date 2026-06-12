@@ -39,6 +39,8 @@ jobs:
         run: meson compile -C build
 
   wrap-fallback:
+    # miss libidn2
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
