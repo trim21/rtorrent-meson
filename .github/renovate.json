@@ -10,7 +10,7 @@
   "packageRules": [
     {
       "groupName": "src",
-      "matchPackageNames": [
+      "matchManagers": [
         "git-submodules"
       ]
     }
