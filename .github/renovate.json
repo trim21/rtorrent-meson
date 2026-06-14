@@ -11,7 +11,7 @@
     {
       "groupName": "src",
       "matchPackageNames": [
-        "submodules"
+        "git-submodules"
       ]
     }
   ]
